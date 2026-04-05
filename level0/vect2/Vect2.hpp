@@ -34,31 +34,31 @@ public:
 	const int &operator[](int index) const;
 
 	// increment & decrement
-	Vect2 &operator++();
+	Vect2 &operator++();//返回ref
 	Vect2 operator++(int);
-	Vect2 &operator--();
+	Vect2 &operator--();//返回ref
 	Vect2 operator--(int);
 
 	// asignment complex
-	Vect2 &operator+=(const Vect2 &other);
-	Vect2 &operator-=(const Vect2 &ohter);
-	Vect2 &operator*=(int scalar);
+	Vect2 &operator+=(const Vect2 &other);//返回ref
+	Vect2 &operator-=(const Vect2 &ohter);//返回ref
+	Vect2 &operator*=(int scalar);//返回ref
 
 	// negative
-	Vect2 operator-() const;
+	Vect2 operator-() const;//返回新值
 	// multiplier
-	Vect2 operator*(int num) const;
+	Vect2 operator*(int num) const;//返回新值
 
 	// other mathematic
-	Vect2 operator+(const Vect2 &other) const;
-	Vect2 operator-(const Vect2 &other) const;
-	Vect2 operator*(const Vect2 &other) const;
+	Vect2 operator+(const Vect2 &other) const;//返回新值
+	Vect2 operator-(const Vect2 &other) const;//返回新值
+	Vect2 operator*(const Vect2 &other) const;//返回新值
 
 	// comparaison
 	bool operator==(const Vect2 &other) const;
 	bool operator!=(const Vect2 &other) const;
 };
 std::ostream &operator<<(std::ostream &out, const Vect2 &v);
-Vect2 operator*(int num, const Vect2& v);
+Vect2 operator*(int num, const Vect2& v);//返回新值
 
 #endif

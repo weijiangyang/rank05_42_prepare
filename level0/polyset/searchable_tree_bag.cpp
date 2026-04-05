@@ -1,5 +1,4 @@
 #include "searchable_tree_bag.hpp"
-#include <string>
 
 searchable_tree_bag::searchable_tree_bag() : tree_bag(){};
 searchable_tree_bag::searchable_tree_bag(const searchable_tree_bag& source) : tree_bag(source){}
@@ -16,6 +15,9 @@ searchable_tree_bag::~searchable_tree_bag()
     this->clear();
 }
 
+
+
+
 bool searchable_tree_bag::has(int value) const
 {
     return (search(tree, value));
@@ -23,7 +25,7 @@ bool searchable_tree_bag::has(int value) const
 
 bool searchable_tree_bag::search(node* node, const int value) const
 {
-    if (node == NULL)
+    if (node == nullptr)
         return (false);
     if (value == node->value)
         return (true);
