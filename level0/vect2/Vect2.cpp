@@ -144,7 +144,7 @@ bool Vect2::operator!=(const Vect2 &other) const
 
 std::ostream &operator<<(std::ostream &out, const Vect2 &v)
 {
-	out << "{" << v[0] << ", " << v[1] << "}" << std::endl;
+	out << "{" << v[0] << ", " << v[1] << "}";
 	return out;
 }
 
