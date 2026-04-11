@@ -28,7 +28,17 @@ void solve_bsq(t_map *map)
     if (!dp)
         return;
     for (int i = 0; i < map->rows; i++)
-        dp[i] = malloc(sizeof(int) * map->cols);
+	{
+		dp[i] = malloc(sizeof(int) * map->cols);
+		if(!dp[i])
+		{
+			while(--i >= 0)
+				free(dp[i]);
+		}
+		free(dp);
+		return;
+	}
+        
 
     // --- 2. 填充 DP 矩阵 ---
     for (int i = 0; i < map->rows; i++)
