@@ -6,74 +6,62 @@
  */
 void print_map(t_map *map)
 {
-    for (int i = 0; i < map->rows; i++)
-        printf("%s\n", map->grid[i]);
+    int i;
+
+    if (!map || !map->grid)
+        return;
+    for (i = 0; i < map->rows; i++)
+    {
+        // 确保只打印 map->cols 长度的内容，不要多打，也不要少打
+        write(1, map->grid[i], map->cols);
+        // 每行必须且只能有一个换行符
+        write(1, "\n", 1);
+    }
 }
 
-static void solve_and_print(FILE *file)
+void solve_and_print(FILE *file)
 {
-	t_map map = {0};//初始化
+    t_map map = {0};
 
-	// 1. 解析表头
-	if (!parse_header(file, &map))
-	{
-		fprintf(stderr, "map error\n");
-		return;
-	}
+    // 针对 bad_1, bad_2, bad_3：Header 解析失败
+    if (!parse_header(file, &map))
+    {
+        // 保持静默！不打印 map error，直接返回
+        free_map(&map);
+        return;
+    }
 
-	// --- 4. 读取地图内容 ---
-	// 将文件中的字符读取并存入 map.grid 二维数组中
-	if (!read_map(file, &map))
-	{
-		fprintf(stderr, "map error\n");
-		free_map(&map);
-		return ;
-	}
+    // 针对 bad_4, bad_5...：Header 过了，但内容不对
+    if (!read_map(file, &map) || !validate_map(&map))
+    {
+        // 题目要求输出到 error output (stderr)
+        fprintf(stderr, "map error\n");
+        free_map(&map);
+        return;
+    }
 
-	// --- 5. 验证地图合法性 ---
-	// 检查：每一行的长度是否一致？是否有非法字符？行数是否匹配？
-	if (!validate_map(&map))
-	{
-		fprintf(stderr, "map error\n");
-		free_map(&map); // 如果读取过程中分配了内存，需释放
-		return ;
-	}
-
-	// 调试信息（正式提交时通常需要删掉）
-	//printf("map is valid!\n");
-
-	// --- 6. 核心逻辑：求解 ---
-	// 调用动态规划算法，找到并标记出最大的正方形
-	solve_bsq(&map);
-
-	// --- 7. 输出结果 ---
-	// 打印处理完（已标记最大正方形）的地图
-	print_map(&map);
-
-	// --- 8. 清理现场 ---
-	free_map(&map); // 释放 grid 以及相关动态内存
-	
+    solve_bsq(&map);
+    print_map(&map);
+    free_map(&map);
 }
 
 int main(int argc, char **argv)
 {
-	if (argc == 1) // 处理标准输入
-	{
-		solve_and_print(stdin);
-	}
-	else
-	{
-		for (int i = 1; i < argc; i++) // 循环处理多个文件
-		{
-			FILE *file = fopen(argv[i], "r");
-			if (file == NULL)
-			{
-				fprintf(stderr, "map error\n"); // 无法打开文件也是 map error
-				continue;
-			}
-			solve_and_print(file);
-			fclose(file);
-		}
-	}
-	return 0;
+    if (argc == 1)
+    {
+        solve_and_print(stdin);
+    }
+    else
+    {
+        for (int i = 1; i < argc; i++)
+        {
+            FILE *file = fopen(argv[i], "r");
+            if (file) // 如果打不开文件，直接 continue，不要打印 map error
+            {
+                solve_and_print(file);
+                fclose(file);
+            }
+        }
+    }
+    return (0);
 }
