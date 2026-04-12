@@ -34,12 +34,10 @@ void solve_bsq(t_map *map)
 		{
 			while(--i >= 0)
 				free(dp[i]);
+			free(dp);
+			return;
 		}
-		free(dp);
-		return;
 	}
-        
-
     // --- 2. 填充 DP 矩阵 ---
     for (int i = 0; i < map->rows; i++)
     {
