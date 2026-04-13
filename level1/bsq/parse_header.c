@@ -40,26 +40,49 @@ static size_t	ft_strlen(const char *s)
 	}
 	return (i);
 }
+
+
 int parse_header(FILE *file, t_map *map)
 {
-    char line[1024];
-    if (!fgets(line, sizeof(line), file)) return (-1); // 空文件
+    char    *line = NULL;
+    size_t  len = 0;
+    ssize_t read;
+    int     i;
 
-    int len = ft_strlen(line);
-    if (len > 0 && line[len - 1] == '\n') line[--len] = '\0';
-    if (len < 4) return (0); // 长度不足以容纳 "1.ox"
+    // 1. 读取整行 Header
+    read = getline(&line, &len, file);
+    if (read <= 0)
+    {
+        if (line) free(line);
+        return (-1); // 空文件，触发静默返回
+    }
 
-    // 最后三个字符固定为 empty, obstacle, full
-    map->full = line[len - 1];
-    map->obstacle = line[len - 2];
-    map->empty = line[len - 3];
+    // 2. 去掉行末换行符
+    i = (int)read;
+    if (i > 0 && line[i - 1] == '\n')
+        line[--i] = '\0';
 
-    // 前面的部分必须是纯数字
-    line[len - 3] = '\0';
+    // 3. 基础长度校验：至少要有 "1.ox" (4个字符)
+    if (i < 4)
+    {
+        free(line);
+        return (0); // 格式错误，触发 map error
+    }
+
+    // 4. 从末尾切分三个字符 (符合 test_charset 要求)
+    map->full = line[i - 1];
+    map->obstacle = line[i - 2];
+    map->empty = line[i - 3];
+
+    // 5. 前面部分转为数字
+    line[i - 3] = '\0';
     map->rows = ft_atoi(line);
+    free(line); // 记得及时释放 getline 分配的内存
 
+    // 6. 逻辑校验：行数必须为正，且字符不能重复
     if (map->rows <= 0 || map->empty == map->obstacle || 
         map->empty == map->full || map->obstacle == map->full)
         return (0);
+
     return (1);
 }
