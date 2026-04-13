@@ -10,6 +10,18 @@
  * 4. 实际读取到的行数必须严格等于 Header 中声明的行数。
  * * 返回值: 1 (合法), 0 (非法，应触发 map error)
  */
+static size_t	ft_strlen(char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
 int validate_map(t_map *map)
 {
     int i;

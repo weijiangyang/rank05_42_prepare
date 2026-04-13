@@ -30,18 +30,6 @@ int	ft_atoi(const char *str)
 	return (res * sign);
 }
 
-size_t	ft_strlen(char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
-
 
 int parse_header(FILE *file, t_map *map)
 {
