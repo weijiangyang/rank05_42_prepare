@@ -24,17 +24,12 @@ void solve_and_print(FILE *file)
 	t_map map = {0};
 	int header_res = parse_header(file, &map);
 
-	if (header_res == -1) // 针对 bad_1, 2, 3：彻底静默
-		return;
-
-	if (header_res == 0 || !read_map(file, &map) || !validate_map(&map))
+	if (!header_res || !read_map(file, &map) || !validate_map(&map))
 	{
-		// 针对 bad_4 和其它非法地图：输出报错
 		fprintf(stderr, "map error\n");
 		free_map(&map);
 		return;
 	}
-
 	solve_bsq(&map);
 	print_map(&map);
 	free_map(&map);
@@ -57,13 +52,10 @@ int main(int argc, char **argv)
 				if(i < argc - 1)
 					write(1, "\n", 1);
 				continue;
-			}
-
-			
+			}	
 			solve_and_print(file);
 			if (i < argc - 1)
 				write(1, "\n", 1);
-			
 			fclose(file);
 		}
 	}

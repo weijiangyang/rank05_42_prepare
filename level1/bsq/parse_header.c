@@ -29,7 +29,8 @@ int	ft_atoi(const char *str)
 	}
 	return (res * sign);
 }
-static size_t	ft_strlen(const char *s)
+
+size_t	ft_strlen(char *s)
 {
 	size_t	i;
 
@@ -82,7 +83,6 @@ int parse_header(FILE *file, t_map *map)
     // 6. 逻辑校验：行数必须为正，且字符不能重复
     if (map->rows <= 0 || map->empty == map->obstacle || 
         map->empty == map->full || map->obstacle == map->full)
-        return (0);
-
+    		return (0);
     return (1);
 }

@@ -20,6 +20,7 @@ int parse_header(FILE *file, t_map *map);
 int read_map(FILE *file, t_map *map);
 int validate_map(t_map *map);
 void free_map(t_map *map);
+size_t ft_strlen(char *str);
 
 int check_line_valid(t_map *map, char *line);
 void solve_bsq(t_map *map);
